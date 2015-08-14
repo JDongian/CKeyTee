@@ -1,2 +1,2 @@
 # Keyout
-Tool to use your laptop keyboard as an external keyboard
+Tool to use a laptop keyboard as an external keyboard
