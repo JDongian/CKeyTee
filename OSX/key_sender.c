@@ -30,12 +30,12 @@ void setup() {
     }
     server = gethostbyname(HOST);
     if (server == NULL) {
-            fprintf(stderr,"ERROR, no such host");
-            exit(0);
+        fprintf(stderr,"ERROR, no such host");
+        exit(1);
     }
-    memset((char *) &serv_addr, 0,  sizeof(serv_addr));
+    memset(&serv_addr, 0,  sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    memcpy((char *)&serv_addr.sin_addr.s_addr, (char *)server->h_addr, server->h_length);
+    memcpy(&serv_addr.sin_addr.s_addr, server->h_addr, server->h_length);
     serv_addr.sin_port = htons(portno);
     if (connect(sockfd,&serv_addr,sizeof(serv_addr)) < 0) {
             error("ERROR connecting");
@@ -43,8 +43,8 @@ void setup() {
 }
 
 void sendKeyInfo(CGEventType type, CGKeyCode keycode) {
-    char buffer[1] = type << 8 | keycode;
-	n = write(sockfd,buffer,strlen(buffer));
+    char buffer = type << 8 | keycode;
+    n = write(sockfd,buffer,strlen(buffer));
     if (n < 0) {
         error("ERROR writing to socket");
     }   
