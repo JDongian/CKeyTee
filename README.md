@@ -1,2 +1,2 @@
-# Keyout
-Tool to use a laptop keyboard as an external keyboard
+# C Key Tee
+ckeytee hopes to make keylogging easy on the most common platforms for C developers.
